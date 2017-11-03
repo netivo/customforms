@@ -1,6 +1,5 @@
 @mixin transition($time, $prop:''){
   @if $prop != '' {
-
     -webkit-transition: $prop $time;
     -moz-transition: $prop $time;
     -ms-transition: $prop $time;

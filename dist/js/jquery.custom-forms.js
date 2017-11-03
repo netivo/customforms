@@ -846,28 +846,34 @@
         };
 
         if(this.length > 0) {
-            initOptions(options);
-            $form = this;
-            init();
-        }
+            if(this.length > 1) {
+                this.each(function(){
+                   $(this).customForm(options);
+                });
+            } else {
+                initOptions(options);
+                $form = this;
+                init();
 
-        $(window).load(function(){
-            var stp = $form.find(globalOptions.stepForm.stepSelector);
-            $.each(stp, function(){
-                var height = $(this).outerHeight();
-                $(this).attr('form-height', height);
-            });
-            if(globalOptions.stepForm.dynamicHeight){
-                var $first = $form.find('[form-step="0"]');
-                var height = $first.attr('form-height');
-                $.each(stp, function(){
-                    var step = $(this).attr('form-step');
-                    if(step != 0){
-                        $(this).css({"height": height});
+                $(window).on('load', function(){
+                    var stp = $form.find(globalOptions.stepForm.stepSelector);
+                    $.each(stp, function(){
+                        var height = $(this).outerHeight();
+                        $(this).attr('form-height', height);
+                    });
+                    if(globalOptions.stepForm.dynamicHeight){
+                        var $first = $form.find('[form-step="0"]');
+                        var height = $first.attr('form-height');
+                        $.each(stp, function(){
+                            var step = $(this).attr('form-step');
+                            if(step != 0){
+                                $(this).css({"height": height});
+                            }
+                        });
                     }
                 });
-            }
-        });
-    }
 
+            }
+        }
+    }
 })(jQuery);
