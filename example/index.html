@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JQuery CustomForm - Example</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="font-awesome/font-awesome.css" rel="stylesheet"/>
+    <link href="../dist/css/jquery.custom-forms.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>JQuery CustomForm <small>example</small></h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <form action="" id="form">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" data-validation="required email" placeholder="Email"/>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" data-validation="required phone" placeholder="Telefon"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" data-validation="required alphanumeric" placeholder="Tekst"/>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text" data-validation="required post" placeholder="Kod pocztowy"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="submit" value="Wyślij"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../libs/jquery-2.2.4.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="../libs/jquery.maskedinput.js"></script>
+    <script src="../libs/jquery.plupload/plupload.full.min.js"></script>
+    <script src="../dist/js/jquery.custom-forms.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#form').customForm();
+        });
+    </script>
+</body>
+</html>
