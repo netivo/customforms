@@ -1,0 +1,25 @@
+{
+  "name": "cudtom-forms",
+  "version": "1.0.0",
+  "description": "Netivo JQuery CustomForms plugin",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Netivo | Michał Świątek",
+  "license": "ISC",
+  "devDependencies": {
+    "minimatch": "*",
+    "lodash": "*",
+    "graceful-fs": "*",
+    "gulp": "*",
+    "gulp-concat": "*",
+    "gulp-concat-css": "*",
+    "gulp-jshint": "*",
+    "gulp-clean-css": "*",
+    "gulp-rename": "*",
+    "gulp-less": "*",
+    "gulp-sass": "*",
+    "gulp-uglify": "*",
+    "jshint": "*"
+  }
+}
