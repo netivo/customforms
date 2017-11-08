@@ -838,10 +838,6 @@
                     console.log('zle!');
                 }
             });
-            if(globalOptions.fileUpload.active){
-                // uploader.init();
-                // console.log(uploader);
-            }
             globalOptions.onInit();
         };
 

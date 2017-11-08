@@ -1,3 +1,236 @@
+@font-face {
+  font-family: 'CustomFontFace';
+  src: url("../../example/font-awesome/fontawesome-webfont.eot?v=4.7.0");
+  src: url("../../example/font-awesome/fontawesome-webfont.eot?#iefix&v=4.7.0") format("embedded-opentype"), url("../../example/font-awesome/fontawesome-webfont.woff2?v=4.7.0") format("woff2"), url("../../example/font-awesome/fontawesome-webfont.woff?v=4.7.0") format("woff"), url("../../example/font-awesome/fontawesome-webfont.ttf?v=4.7.0") format("truetype"), url("../../example/font-awesome/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+*, *:hover, *:focus {
+  outline: none; }
+
+.cf-form .cf-form__input-group {
+  display: table;
+  position: relative;
+  border-collapse: separate;
+  border: 1px solid #333030;
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 300;
+  height: 30px;
+  box-shadow: none;
+  margin-bottom: 15px; }
+  .cf-form .cf-form__input-group .cf-form__input {
+    border: 0;
+    width: 100%;
+    padding: 5px 0 4px 10px; }
+  .cf-form .cf-form__input-group .cf-form__addon {
+    display: table-cell;
+    vertical-align: middle;
+    width: 1%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 300;
+    color: #333030;
+    white-space: nowrap;
+    line-height: 1; }
+    .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--prefix {
+      padding: 0 0 0 8px; }
+    .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--validate {
+      padding: 0 8px;
+      font-weight: 400;
+      font-family: "CustomFontFace", sans-serif; }
+      .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--validate:before {
+        content: ""; }
+
+.cf-form .cf-form__checkbox-group {
+  margin-bottom: 15px; }
+  .cf-form .cf-form__checkbox-group .cf-form__checkbox {
+    text-decoration: none;
+    border: 1px solid #333030;
+    background: 0 0;
+    color: #333030;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    margin-top: 0;
+    line-height: 30px;
+    height: 30px;
+    font-size: 14px;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s; }
+    .cf-form .cf-form__checkbox-group .cf-form__checkbox:hover {
+      text-decoration: none;
+      background-color: #f2f2f2;
+      color: #333030; }
+    .cf-form .cf-form__checkbox-group .cf-form__checkbox:focus {
+      text-decoration: none;
+      color: #333030; }
+    .cf-form .cf-form__checkbox-group .cf-form__checkbox.checked {
+      text-decoration: none;
+      background-color: #dfdfdf; }
+
+.cf-form .cf-form__upload-container {
+  margin-bottom: 15px; }
+  .cf-form .cf-form__upload-container .cf-form__upload-button {
+    position: relative;
+    display: inline-block;
+    background: 0 0;
+    border: 1px solid #333030;
+    color: #333030;
+    font-size: 14px;
+    text-align: left;
+    padding: 5px 30px 5px 20px;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s; }
+    .cf-form .cf-form__upload-container .cf-form__upload-button:after {
+      font-family: "CustomFontFace", sans-serif;
+      content: "\f067";
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin-right: 10px;
+      -webkit-transform: translate(0, -50%);
+      -moz-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+      -o-transform: translate(0, -50%);
+      transform: translate(0, -50%); }
+    .cf-form .cf-form__upload-container .cf-form__upload-button:hover {
+      color: #fff;
+      background: #333030; }
+  .cf-form .cf-form__upload-container .cf-form__files {
+    padding: 0;
+    list-style: none; }
+    .cf-form .cf-form__upload-container .cf-form__files .cf-form__file {
+      line-height: 17px;
+      width: 100%;
+      zoom: 1;
+      font-size: 14px;
+      color: #333030;
+      margin-bottom: 10px; }
+      .cf-form .cf-form__upload-container .cf-form__files .cf-form__file .cf-form__file-remove {
+        background: 0 0;
+        border: 0;
+        padding: 0 10px 0 0;
+        -webkit-transition: .3s;
+        -moz-transition: .3s;
+        -ms-transition: .3s;
+        -o-transition: .3s;
+        transition: .3s;
+        float: left;
+        color: #333030;
+        font-family: "CustomFontFace", sans-serif;
+        font-size: 14px;
+        line-height: 17px; }
+        .cf-form .cf-form__upload-container .cf-form__files .cf-form__file .cf-form__file-remove:hover {
+          color: #333030; }
+        .cf-form .cf-form__upload-container .cf-form__files .cf-form__file .cf-form__file-remove:before {
+          content: "\f00d"; }
+
+.cf-form .cf-form__select {
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 15px; }
+  .cf-form .cf-form__select:after {
+    font-family: "CustomFontFace", sans-serif;
+    color: #333030;
+    font-size: 14px;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-style: normal;
+    content: "\f078"; }
+  .cf-form .cf-form__select .cf-form__select-placeholder {
+    margin-bottom: 0;
+    cursor: pointer;
+    display: block;
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 300;
+    color: #333030;
+    padding: 5px 0 4px 10px;
+    border: 1px solid #333030;
+    -webkit-transition: 300ms;
+    -moz-transition: 300ms;
+    -ms-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms; }
+    .cf-form .cf-form__select .cf-form__select-placeholder:hover, .cf-form .cf-form__select .cf-form__select-placeholder:focus {
+      text-decoration: none; }
+  .cf-form .cf-form__select .cf-form__select-options {
+    background: #ffffff;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: absolute;
+    display: block;
+    min-width: 100%;
+    max-width: 150%;
+    top: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    -webkit-transition: 300ms;
+    -moz-transition: 300ms;
+    -ms-transition: 300ms;
+    -o-transition: 300ms;
+    transition: 300ms;
+    overflow: hidden;
+    border: 1px solid transparent; }
+    .cf-form .cf-form__select .cf-form__select-options .cf-form__select-option {
+      display: block;
+      background: transparent;
+      color: #333030;
+      font-size: 14px;
+      font-weight: 300;
+      padding: 7px 0 7px 10px;
+      -webkit-transition: 300ms;
+      -moz-transition: 300ms;
+      -ms-transition: 300ms;
+      -o-transition: 300ms;
+      transition: 300ms; }
+      .cf-form .cf-form__select .cf-form__select-options .cf-form__select-option:hover {
+        background: #eeeeee;
+        color: #333030; }
+  .cf-form .cf-form__select.cs-form__select-opened .cf-form__select-options {
+    z-index: 11;
+    border: 1px solid #333030; }
+
+.cf-form input[type="checkbox"] {
+  display: none; }
+
+.cf-form input[type="checkbox"] + label {
+  font-weight: 400;
+  font-size: 13px;
+  color: #333030;
+  line-height: 17px;
+  cursor: pointer;
+  margin-bottom: 15px; }
+
+.cf-form input[type="checkbox"] + label span {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin: -1px 10px 0 0;
+  vertical-align: middle;
+  background: 0 0;
+  border: 1px solid #333030;
+  cursor: pointer; }
+
+.cf-form input[type="checkbox"]:checked + label span {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin: -1px 10px 0 0;
+  vertical-align: middle;
+  background: #333030;
+  border: 1px solid #333030;
+  cursor: pointer; }
+
 form.custom-form {
   width: 100%;
   position: relative;

@@ -1,6 +1,7 @@
 @import "variables";
 @import "mixins";
-
+@import "elements";
+@import "cf-form";
 form{
   &.custom-form{
     width: 100%;

@@ -9,53 +9,225 @@
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>JQuery CustomForm
+                    <small>example</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <form action="" id="form">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" data-validation="required email" placeholder="Email"/>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" data-validation="required phone" placeholder="Telefon"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" data-validation="required alphanumeric" placeholder="Tekst"/>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" data-validation="required post" placeholder="Kod pocztowy"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <select>
+                            <option value="">1</option>
+                            <option value="">2</option>
+                            <option value="">3</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text" data-validation="required post" placeholder="Kod pocztowy"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                        <input data-validation="required" type="checkbox" id="modal_fast_terms" required="required"/>
+                        <label for="modal_fast_terms"><span></span>Zgadzam się na przetwarzanie oraz przesłanie moich
+                            danych do przedstawiciela handlowego Internormu w mojej okolicy, oraz na to, aby
+                            skontaktował się on ze mną w celu udzielenia indywidualnej porady.</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <input value="personal" data-validation="required" type="radio" data-checkbox-type="box"
+                               data-checkbox-group="meeting" id="ff-meeting-personal">
+                        <label for="ff-meeting-personal">Spotkali się osobiście</label>
+                        <input value="phone" data-validation="required" type="radio" data-checkbox-type="box"
+                               data-checkbox-group="meeting" id="ff-meeting-phone">
+                        <label for="ff-meeting-phone">Zadzwonili do Ciebie</label>
+                        <input value="offer" data-validation="required" type="radio" data-checkbox-type="box"
+                               data-checkbox-group="meeting" id="ff-meeting-offer">
+                        <label for="ff-meeting-offer">Przygotowali ofertę indywidualną</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <input value="personal" data-validation="required" type="checkbox" data-checkbox-type="box"
+                               data-checkbox-group="meeting-2" id="fff-meeting-personal">
+                        <label for="fff-meeting-personal">Spotkali się osobiście</label>
+                        <input value="phone" data-validation="required" type="checkbox" data-checkbox-type="box"
+                               data-checkbox-group="meeting-2" id="fff-meeting-phone">
+                        <label for="fff-meeting-phone">Zadzwonili do Ciebie</label>
+                        <input value="offer" data-validation="required" type="checkbox" data-checkbox-type="box"
+                               data-checkbox-group="meeting-2" id="fff-meeting-offer">
+                        <label for="fff-meeting-offer">Przygotowali ofertę indywidualną</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="file-upload upload_container">
+                            <ul class="list_of_files"></ul>
+                            <button class="btn-file add_next_file">Przeglądaj<span class="fa fa-plus"></span></button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="submit" value="Wyślij"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <form style="margin-top:50px" class="cf-form">
         <div class="row">
-            <div class="col-xs-12">
-                <div class="page-header">
-                    <h1>JQuery CustomForm <small>example</small></h1>
+            <div class="col-xs-12 col-sm-6">
+                <div class="cf-form__input-group">
+                    <span class="cf-form__addon cf-form__addon--prefix">AB</span>
+                    <input type="text" class="cf-form__input" placeholder="Telefon"/>
+                    <span class="cf-form__addon cf-form__addon--validate"></span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="cf-form__input-group">
+                    <input type="text" class="cf-form__input" placeholder="Tekst"/>
+                    <span class="cf-form__addon cf-form__addon--validate"></span>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
-                <form action="" id="form">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6">
-                            <input type="text" data-validation="required email" placeholder="Email"/>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <input type="text" data-validation="required phone" placeholder="Telefon"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6">
-                            <input type="text" data-validation="required alphanumeric" placeholder="Tekst"/>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <input type="text" data-validation="required post" placeholder="Kod pocztowy"/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <input type="submit" value="Wyślij"/>
-                        </div>
-                    </div>
-                </form>
+            <div class="col-xs-12 col-sm-6">
+                <div id="testSelect" class="cf-form__select" style="position: relative;">
+                    <a class="cf-form__select-placeholder" href=""><span>Wybierz</span></a>
+                    <ul class="cf-form__select-options" style="position: absolute; bottom: 0; top: 100%;">
+                        <li class="cf-form__select-option"  data-value="">1</li>
+                        <li class="cf-form__select-option" data-value="">2</li>
+                        <li class="cf-form__select-option" data-value="">3</li>
+                        <li class="cf-form__select-option" data-value="">4</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <input data-validation="required" class="cf-form__modal_fast_terms" type="checkbox"
+                       id="cf-form__modal_fast_terms" required="required"/>
+                <label for="cf-form__modal_fast_terms"><span></span>Zgadzam się na przetwarzanie oraz przesłanie moich
+                    danych do przedstawiciela handlowego Internormu w mojej okolicy, oraz na to, aby skontaktował się on
+                    ze mną w celu udzielenia indywidualnej porady.</label>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="cf-form__checkbox-group" data-group="meeting" data-validation="required">
+                    <a class="cf-form__checkbox radio checked" href="" data-value="personal">Spotkali się osobiście</a>
+                    <a class="cf-form__checkbox radio" href="" data-value="phone">Zadzwonili do Ciebie</a>
+                    <a class="cf-form__checkbox radio" href="" data-value="offer">Przygotowali ofertę indywidualną</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="cf-form__checkbox-group" data-group="meeting-2"
+                     data-validation="required">
+                    <a class="cf-form__checkbox checkbox" href="" data-value="personal">Spotkali się osobiście</a>
+                    <a class="cf-form__checkbox checkbox" href="" data-value="phone">Zadzwonili do Ciebie</a>
+                    <a class="cf-form__checkbox checkbox checked" href="" data-value="offer">Przygotowali ofertę
+                        indywidualną</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="cf-form__upload-container" style="position: relative;">
+                    <ul class="cf-form__files">
+                        <li class="cf-form__file">
+                            <input value="Dell Latitude E6540 - Klucz z obudowy.jpg" name="files[]" type="hidden">
+                            <span>Dell Latitude E6540 - Klucz z obudowy.jpg</span>
+                            <button class="cf-form__file-remove">
+                            </button>
+                        </li>
+                        <li class="cf-form__file">
+                            <input value="Dell Latitude E6540 - Klucz z obudowy.jpg" name="files[]" type="hidden">
+                            <span>Dell Latitude E6540 - Klucz z obudowy.jpg</span>
+                            <button class="cf-form__file-remove">
+                            </button>
+                        </li>
+                        <li class="cf-form__file">
+                            <input value="Dell Latitude E6540 - Klucz z obudowy.jpg" name="files[]" type="hidden">
+                            <span>Dell Latitude E6540 - Klucz z obudowy.jpg</span>
+                            <button class="cf-form__file-remove">
+                            </button>
+                        </li>
+                    </ul>
+                    <button class="cf-form__upload-button" style="z-index: 1;">
+                        Przeglądaj
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
 
-    <script src="../libs/jquery-2.2.4.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="../libs/jquery.maskedinput.js"></script>
-    <script src="../libs/jquery.plupload/plupload.full.min.js"></script>
-    <script src="../dist/js/jquery.custom-forms.min.js"></script>
+            </div>
+        </div>
+    </form>
+</div>
 
-    <script>
-        $(document).ready(function(){
-            $('#form').customForm();
-        });
-    </script>
+<script src="../libs/jquery-2.2.4.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="../libs/jquery.maskedinput.js"></script>
+<script src="../libs/jquery.plupload/plupload.full.min.js"></script>
+<script src="../dist/js/jquery.custom-forms.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#form').customForm({fileUpload: true});
+        var customSelectTriggerClick = function (e) {
+            e.preventDefault();
+            var $ul = $(this).find('ul');
+            if (!$(this).hasClass('cs-form__select-opened')) {
+                var h = 0;
+                $ul.find('li').each(function () {
+                    h += $(this).outerHeight(true);
+                });
+                $ul.css({"bottom": "-" + h + "px"});
+                $(this).addClass('cs-form__select-opened');
+            }
+            else {
+                $ul.css({"bottom": "0px"});
+                $(this).removeClass('cs-form__select-opened');
+            }
+        };
+        var customSelectTriggerLeave = function (e) {
+            e.preventDefault();
+            var $ul = $(this).find('ul');
+            $ul.css({"bottom": "0px"});
+            $(this).removeClass('cs-form__select-opened');
+        };
+        $("#testSelect").on('click', customSelectTriggerClick);
+        $("#testSelect").on('mouseleave', customSelectTriggerLeave);
+
+        $(".cf-form__checkbox").click(function (e) {
+            e.preventDefault();
+
+        })
+    });
+
+</script>
 </body>
 </html>
