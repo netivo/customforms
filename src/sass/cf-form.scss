@@ -3,7 +3,7 @@
     display: table;
     position: relative;
     border-collapse: separate;
-    border: 1px solid #333030;
+    border: 1px solid $color-standard;
     font-size: 14px;
     line-height: 19px;
     font-weight: 300;
@@ -22,7 +22,7 @@
       text-align: center;
       font-size: 14px;
       font-weight: 300;
-      color: #333030;
+      color: $color-standard;
       white-space: nowrap;
       line-height: 1;
       &.cf-form__addon--prefix {
@@ -31,9 +31,30 @@
       &.cf-form__addon--validate {
         padding: 0 8px;
         font-weight: 400;
-        font-family: "CustomFontFace", sans-serif;
+        font-family: $icon-font-family;
         &:before {
           content: "";
+        }
+      }
+    }
+    &.validation-error {
+      border-color: $color-error;
+      .cf-form__input {
+        color: $color-error;
+        @include placeholder($color-error)
+      }
+      .cf-form__addon {
+        color: $color-error;
+        &.cf-form__addon--validate:before {
+          content: $icon-times;
+        }
+      }
+    }
+    &.validation-ok {
+      .cf-form__addon--validate {
+        color: $color-sucess;
+        &:before {
+          content: $icon-ok;
         }
       }
     }
@@ -41,10 +62,11 @@
   & &__checkbox-group {
     margin-bottom: 15px;
     .cf-form__checkbox {
+      display: block;
       text-decoration: none;
-      border: 1px solid #333030;
+      border: 1px solid $color-standard;
       background: 0 0;
-      color: #333030;
+      color: $color-standard;
       padding: 0 10px;
       margin-bottom: 10px;
       margin-top: 0;
@@ -59,26 +81,35 @@
       &:hover {
         text-decoration: none;
         background-color: #f2f2f2;
-        color: #333030;
+        color: $color-standard;
       }
       &:focus {
         text-decoration: none;
-        color: #333030;
+        color: $color-standard;
       }
       &.checked {
         text-decoration: none;
         background-color: #dfdfdf;
       }
     }
+    &.validation-error {
+      .cf-form__checkbox {
+        border-color: $color-error;
+        color: $color-error;
+      }
+    }
   }
   & &__upload-container {
     margin-bottom: 15px;
+    .moxie-shim {
+      left: 105% !important;
+    }
     .cf-form__upload-button {
       position: relative;
       display: inline-block;
       background: 0 0;
-      border: 1px solid #333030;
-      color: #333030;
+      border: 1px solid $color-standard;
+      color: $color-standard;
       font-size: 14px;
       text-align: left;
       padding: 5px 30px 5px 20px;
@@ -88,8 +119,8 @@
       -o-transition: .3s;
       transition: .3s;
       &:after {
-        font-family: "CustomFontFace", sans-serif;
-        content: "\f067";
+        font-family: $icon-font-family;
+        content: $icon-plus;
         position: absolute;
         top: 50%;
         right: 0;
@@ -102,7 +133,7 @@
       }
       &:hover {
         color: #fff;
-        background: #333030
+        background: $color-standard;
       }
     }
     .cf-form__files {
@@ -114,7 +145,7 @@
         width: 100%;
         zoom: 1;
         font-size: 14px;
-        color: #333030;
+        color: $color-standard;
         margin-bottom: 10px;
         .cf-form__file-remove {
           background: 0 0;
@@ -126,15 +157,15 @@
           -o-transition: .3s;
           transition: .3s;
           float: left;
-          color: #333030;
-          font-family: "CustomFontFace", sans-serif;
+          color: $color-standard;
+          font-family: $icon-font-family;
           font-size: 14px;
           line-height: 17px;
           &:hover {
-            color: #333030;
+            color: $color-standard;
           }
           &:before {
-            content: "\f00d";
+            content: $icon-times;
           }
         }
       }
@@ -145,14 +176,14 @@
     cursor: pointer;
     margin-bottom: 15px;
     &:after {
-      font-family: "CustomFontFace", sans-serif;
-      color: #333030;
+      font-family: $icon-font-family;
+      color: $color-standard;
       font-size: 14px;
       position: absolute;
       right: 10px;
       top: 5px;
       font-style: normal;
-      content: "\f078";
+      content: $icon-chevron-down;
     }
     .cf-form__select-placeholder {
       margin-bottom: 0;
@@ -161,9 +192,9 @@
       font-size: 14px;
       line-height: 21px;
       font-weight: 300;
-      color: #333030;
+      color: $color-standard;
       padding: 5px 0 4px 10px;
-      border: 1px solid #333030;
+      border: 1px solid $color-standard;
       @include transition(300ms);
       &:hover, &:focus {
         text-decoration: none;
@@ -188,21 +219,30 @@
       .cf-form__select-option {
         display: block;
         background: transparent;
-        color: #333030;
+        color: $color-standard;
         font-size: 14px;
         font-weight: 300;
         padding: 7px 0 7px 10px;
         @include transition(300ms);
         &:hover {
           background: #eeeeee;
-          color: #333030;;
+          color: $color-standard;;
         }
       }
     }
     &.cs-form__select-opened {
       .cf-form__select-options {
         z-index: 11;
-        border: 1px solid #333030;
+        border: 1px solid $color-standard;
+      }
+    }
+    &.validation-error {
+      .cf-form__select-placeholder {
+        color: $color-error;
+        border-color: $color-error;
+      }
+      &:after {
+        color: $color-error;
       }
     }
   }
@@ -213,7 +253,7 @@
   input[type="checkbox"] + label {
     font-weight: 400;
     font-size: 13px;
-    color: #333030;
+    color: $color-standard;
     line-height: 17px;
     cursor: pointer;
     margin-bottom: 15px;
@@ -226,8 +266,15 @@
     margin: -1px 10px 0 0;
     vertical-align: middle;
     background: 0 0;
-    border: 1px solid #333030;
+    border: 1px solid $color-standard;
     cursor: pointer;
+  }
+
+  input.validation-error[type="checkbox"] + label {
+    color: $color-error;
+  }
+  input.validation-error[type="checkbox"] + label span {
+    border-color: $color-error;
   }
 
   input[type="checkbox"]:checked + label span {
@@ -236,8 +283,23 @@
     height: 13px;
     margin: -1px 10px 0 0;
     vertical-align: middle;
-    background: #333030;
-    border: 1px solid #333030;
+    background: $color-standard;
+    border: 1px solid $color-standard;
     cursor: pointer;
+  }
+  & &__submit {
+    float: right;
+    border: 1px solid $color-standard;
+    background: transparent;
+    color: $color-standard;;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    @include transition(300ms);
+    &:hover {
+      color: #ffffff;
+      background: $color-standard;
+    }
   }
 }

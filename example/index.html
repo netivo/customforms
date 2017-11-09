@@ -40,10 +40,10 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
-                        <select>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                            <option value="">3</option>
+                        <select data-validation="required" placeholder="Wybierz">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-6">
@@ -84,7 +84,7 @@
                     <div class="col-xs-12 col-sm-6">
                         <div class="file-upload upload_container">
                             <ul class="list_of_files"></ul>
-                            <button class="btn-file add_next_file">Przeglądaj<span class="fa fa-plus"></span></button>
+                            <button class="btn-file add_next_file">Przeglądaj</button>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6"></div>
@@ -98,7 +98,6 @@
             </form>
         </div>
     </div>
-
     <form style="margin-top:50px" class="cf-form">
         <div class="row">
             <div class="col-xs-12 col-sm-6">
@@ -192,7 +191,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="../libs/jquery.maskedinput.js"></script>
 <script src="../libs/jquery.plupload/plupload.full.min.js"></script>
-<script src="../dist/js/jquery.custom-forms.min.js"></script>
+<script src="../dist/js/jquery.custom-forms.js"></script>
 
 <script>
     $(document).ready(function () {

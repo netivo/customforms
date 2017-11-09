@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @font-face {
   font-family: 'CustomFontFace';
   src: url("../../example/font-awesome/fontawesome-webfont.eot?v=4.7.0");
@@ -41,10 +42,31 @@
       font-family: "CustomFontFace", sans-serif; }
       .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--validate:before {
         content: ""; }
+  .cf-form .cf-form__input-group.validation-error {
+    border-color: #CC2931; }
+    .cf-form .cf-form__input-group.validation-error .cf-form__input {
+      color: #CC2931; }
+      .cf-form .cf-form__input-group.validation-error .cf-form__input::-webkit-input-placeholder {
+        color: #CC2931; }
+      .cf-form .cf-form__input-group.validation-error .cf-form__input:-moz-placeholder {
+        color: #CC2931; }
+      .cf-form .cf-form__input-group.validation-error .cf-form__input::-moz-placeholder {
+        color: #CC2931; }
+      .cf-form .cf-form__input-group.validation-error .cf-form__input:-ms-input-placeholder {
+        color: #CC2931; }
+    .cf-form .cf-form__input-group.validation-error .cf-form__addon {
+      color: #CC2931; }
+      .cf-form .cf-form__input-group.validation-error .cf-form__addon.cf-form__addon--validate:before {
+        content: ""; }
+  .cf-form .cf-form__input-group.validation-ok .cf-form__addon--validate {
+    color: #92D95C; }
+    .cf-form .cf-form__input-group.validation-ok .cf-form__addon--validate:before {
+      content: ""; }
 
 .cf-form .cf-form__checkbox-group {
   margin-bottom: 15px; }
   .cf-form .cf-form__checkbox-group .cf-form__checkbox {
+    display: block;
     text-decoration: none;
     border: 1px solid #333030;
     background: 0 0;
@@ -70,9 +92,14 @@
     .cf-form .cf-form__checkbox-group .cf-form__checkbox.checked {
       text-decoration: none;
       background-color: #dfdfdf; }
+  .cf-form .cf-form__checkbox-group.validation-error .cf-form__checkbox {
+    border-color: #CC2931;
+    color: #CC2931; }
 
 .cf-form .cf-form__upload-container {
   margin-bottom: 15px; }
+  .cf-form .cf-form__upload-container .moxie-shim {
+    left: 105% !important; }
   .cf-form .cf-form__upload-container .cf-form__upload-button {
     position: relative;
     display: inline-block;
@@ -89,7 +116,7 @@
     transition: .3s; }
     .cf-form .cf-form__upload-container .cf-form__upload-button:after {
       font-family: "CustomFontFace", sans-serif;
-      content: "\f067";
+      content: "";
       position: absolute;
       top: 50%;
       right: 0;
@@ -129,7 +156,7 @@
         .cf-form .cf-form__upload-container .cf-form__files .cf-form__file .cf-form__file-remove:hover {
           color: #333030; }
         .cf-form .cf-form__upload-container .cf-form__files .cf-form__file .cf-form__file-remove:before {
-          content: "\f00d"; }
+          content: ""; }
 
 .cf-form .cf-form__select {
   position: relative;
@@ -143,7 +170,7 @@
     right: 10px;
     top: 5px;
     font-style: normal;
-    content: "\f078"; }
+    content: ""; }
   .cf-form .cf-form__select .cf-form__select-placeholder {
     margin-bottom: 0;
     cursor: pointer;
@@ -199,6 +226,11 @@
   .cf-form .cf-form__select.cs-form__select-opened .cf-form__select-options {
     z-index: 11;
     border: 1px solid #333030; }
+  .cf-form .cf-form__select.validation-error .cf-form__select-placeholder {
+    color: #CC2931;
+    border-color: #CC2931; }
+  .cf-form .cf-form__select.validation-error:after {
+    color: #CC2931; }
 
 .cf-form input[type="checkbox"] {
   display: none; }
@@ -221,6 +253,12 @@
   border: 1px solid #333030;
   cursor: pointer; }
 
+.cf-form input.validation-error[type="checkbox"] + label {
+  color: #CC2931; }
+
+.cf-form input.validation-error[type="checkbox"] + label span {
+  border-color: #CC2931; }
+
 .cf-form input[type="checkbox"]:checked + label span {
   display: inline-block;
   width: 13px;
@@ -230,6 +268,24 @@
   background: #333030;
   border: 1px solid #333030;
   cursor: pointer; }
+
+.cf-form .cf-form__submit {
+  float: right;
+  border: 1px solid #333030;
+  background: transparent;
+  color: #333030;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -ms-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms; }
+  .cf-form .cf-form__submit:hover {
+    color: #ffffff;
+    background: #333030; }
 
 form.custom-form {
   width: 100%;
