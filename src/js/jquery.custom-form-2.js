@@ -260,6 +260,55 @@
 
 
         };
+        var inputNumberUp = function (e) {
+            e.preventDefault();
+            var $input = $(this).parent().parent().find('input');
+            var number = $input.val();
+            var max = $input.data("max");
+            var min = $input.data("min");
+            number = parseInt(number);
+            if (isNaN(number)) {
+                number = min;
+            } else {
+                number++;
+                if (number > max) {
+                    number = min;
+                }
+            }
+            $input.val(number);
+            validateInput(e, $input);
+            if (globalOptions.stepForm.active && globalOptions.stepForm.dynamicValidation) {
+                var $step = $input.closest(globalOptions.stepForm.stepSelector);
+                validateStep($step);
+            }
+
+
+        };
+        var inputNumberDown = function (e) {
+            e.preventDefault();
+            var $input = $(this).parent().parent().find('input');
+            var number = $input.val();
+            var max = $input.data("max");
+            var min = $input.data("min");
+            number = parseInt(number);
+            if (isNaN(number)) {
+                number = min;
+            } else if (number > max) {
+                number = min;
+            }
+            else {
+                number--;
+                if (number < min) {
+                    number = min;
+                }
+            }
+            $input.val(number);
+            validateInput(e, $input);
+            if (globalOptions.stepForm.active && globalOptions.stepForm.dynamicValidation) {
+                var $step = $input.closest(globalOptions.stepForm.stepSelector);
+                validateStep($step);
+            }
+        };
         var initValidationInput = function ($el) {
             var data_validation = $el.attr('data-validation');
             if (typeof data_validation != 'undefined') {
@@ -280,8 +329,16 @@
                     if ($.inArray('post', validations) != -1) {
                         if (globalOptions.useMask) $el.mask('99-999');
                     }
+                    if ($.inArray('numeric', validations) != -1) {
+                        $cont.prepend(
+                            $('<span></span>').addClass('cf-form__addon cf-form__addon--prefix')
+                                .append($('<a></a>').addClass('cf-form__numeric-button cf-form__numeric-button--up').on('click', inputNumberUp))
+                                .append($('<a></a>').addClass('cf-form__numeric-button cf-form__numeric-button--down').on('click', inputNumberDown))
+                        );
+                    }
 
                     $el.on('change, focusout', function (e) {
+                        console.log('test1')
                         validateInput(e, $(this));
                         if (globalOptions.stepForm.active && globalOptions.stepForm.dynamicValidation) {
                             var $step = $(this).closest(globalOptions.stepForm.stepSelector);
@@ -604,6 +661,7 @@
 
         /* Element validators */
         var validateInput = function (event, $element) {
+            console.log('validateinput')
             var $container = $element.closest('.custom-form-validated');
             if ($container.length == 0) $container = $element;
 
@@ -635,6 +693,11 @@
                                 break;
                             case 'post':
                                 r = validatePost(val);
+                                break;
+                            case 'numeric':
+                                var max = $element.data("max");
+                                var min = $element.data("min");
+                                r = validateNumeric(val, max, min);
                                 break;
                             default:
                                 r = true;
@@ -735,6 +798,9 @@
                                 case 'post':
                                     r = validatePost(val);
                                     break;
+                                case 'numeric':
+                                    r = validateNumeric(val);
+                                    break;
                                 default:
                                     r = true;
                             }
@@ -802,6 +868,13 @@
             matches = value.match(/^[0-9]{5}$/);
             return matches;
         };
+        var validateNumeric = function (value, max, min) {
+            if (value == '') return true;
+            if(value < min || value > max){
+                return false;
+            }
+            return !isNaN(parseInt(value));
+        };
 
         var init = function () {
             $form.addClass('cf-form');
@@ -821,7 +894,10 @@
                 if (tag == 'input' && (type == 'checkbox' || type == 'radio') && globalOptions.customCheckbox) {
                     initCustomCheckbox($el);
                 }
-                if (globalOptions.validation && tag == 'input' && $.inArray(type, ['text', 'email']) != -1) {
+                if (globalOptions.validation && tag == 'input' && $.inArray(type, ['text', 'email', 'number']) != -1) {
+                    if (type === 'number' || type === 'email') {
+                        $el.attr('type', 'text');
+                    }
                     initValidationInput($el);
                 }
                 if (globalOptions.validation && tag == 'textarea') {

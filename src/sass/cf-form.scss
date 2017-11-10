@@ -27,6 +27,28 @@
       line-height: 1;
       &.cf-form__addon--prefix {
         padding: 0 0 0 8px;
+        .cf-form__numeric-button {
+          display: inline-block;
+          color: $color-standard;
+          text-decoration: none;
+          background: 0 0;
+          border: 0;
+          margin-left: 5px;
+          font-family: $icon-font-family;
+          &:hover{
+            cursor:pointer;
+          }
+          &.cf-form__numeric-button--up{
+            &:before {
+              content: $icon-plus;
+            }
+          }
+          &.cf-form__numeric-button--down{
+            &:before {
+              content: $icon-minus;
+            }
+          }
+        }
       }
       &.cf-form__addon--validate {
         padding: 0 8px;
@@ -45,6 +67,11 @@
       }
       .cf-form__addon {
         color: $color-error;
+        &.cf-form__addon--prefix{
+          .cf-form__numeric-button{
+            color:$color-error;
+          }
+        }
         &.cf-form__addon--validate:before {
           content: $icon-times;
         }

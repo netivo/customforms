@@ -36,6 +36,20 @@
     line-height: 1; }
     .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--prefix {
       padding: 0 0 0 8px; }
+      .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--prefix .cf-form__numeric-button {
+        display: inline-block;
+        color: #333030;
+        text-decoration: none;
+        background: 0 0;
+        border: 0;
+        margin-left: 5px;
+        font-family: "CustomFontFace", sans-serif; }
+        .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--prefix .cf-form__numeric-button:hover {
+          cursor: pointer; }
+        .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--prefix .cf-form__numeric-button.cf-form__numeric-button--up:before {
+          content: ""; }
+        .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--prefix .cf-form__numeric-button.cf-form__numeric-button--down:before {
+          content: ""; }
     .cf-form .cf-form__input-group .cf-form__addon.cf-form__addon--validate {
       padding: 0 8px;
       font-weight: 400;
@@ -56,6 +70,8 @@
         color: #CC2931; }
     .cf-form .cf-form__input-group.validation-error .cf-form__addon {
       color: #CC2931; }
+      .cf-form .cf-form__input-group.validation-error .cf-form__addon.cf-form__addon--prefix .cf-form__numeric-button {
+        color: #CC2931; }
       .cf-form .cf-form__input-group.validation-error .cf-form__addon.cf-form__addon--validate:before {
         content: ""; }
   .cf-form .cf-form__input-group.validation-ok .cf-form__addon--validate {
