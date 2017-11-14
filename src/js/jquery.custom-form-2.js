@@ -260,45 +260,81 @@
 
 
         };
+        var validateMinMax = function (val) {
+            if (isNaN(val) || val === '') {
+                return false;
+            }
+            return true
+        };
+
         var inputNumberUp = function (e) {
             e.preventDefault();
             var $input = $(this).parent().parent().find('input');
             var number = $input.val();
-            var max = $input.data("max");
-            var min = $input.data("min");
-            number = parseInt(number);
+            var max = $input.data('max');
+            var min = $input.data('min');
+            var step = $input.data('step');
+            var decimal = $input.data('decimal');
+            var decimalPlaces = $input.data('decimal-places');
+            number = (decimal === true) ? parseFloat(number) : parseInt(number);
+            if (!validateMinMax(step)) {
+                if (decimal === true) step = 0.1;
+                else step = 1;
+            }
+            if (decimal === true && !validateMinMax(decimalPlaces)) decimalPlaces = 1;
             if (isNaN(number)) {
-                number = min;
+                if (!validateMinMax(min)) {
+                    number = 0;
+
+                } else {
+                    number = min;
+                }
             } else {
-                number++;
-                if (number > max) {
+                number += step;
+                number = number.toFixed(decimalPlaces);
+                if (validateMinMax(max) && number > max) {
+                    number = max;
+                }
+                if (validateMinMax(min) && number < min) {
                     number = min;
                 }
             }
+
             $input.val(number);
             validateInput(e, $input);
             if (globalOptions.stepForm.active && globalOptions.stepForm.dynamicValidation) {
                 var $step = $input.closest(globalOptions.stepForm.stepSelector);
                 validateStep($step);
             }
-
-
         };
         var inputNumberDown = function (e) {
             e.preventDefault();
             var $input = $(this).parent().parent().find('input');
             var number = $input.val();
-            var max = $input.data("max");
-            var min = $input.data("min");
-            number = parseInt(number);
-            if (isNaN(number)) {
-                number = min;
-            } else if (number > max) {
-                number = min;
+            var max = $input.data('max');
+            var min = $input.data('min');
+            var step = $input.data('step');
+            var decimal = $input.data('decimal');
+            var decimalPlaces = $input.data('decimal-places');
+            number = (decimal === true) ? parseFloat(number) : parseInt(number);
+            if (!validateMinMax(step)) {
+                if (decimal === true) step = 0.1;
+                else step = 1;
             }
-            else {
-                number--;
-                if (number < min) {
+            if (decimal === true && !validateMinMax(decimalPlaces)) decimalPlaces = 1;
+            if (isNaN(number)) {
+                if (!validateMinMax(max)) {
+                    number = 0;
+                } else {
+                    number = max;
+                }
+            } else {
+                number -= step;
+                number = number.toFixed(decimalPlaces);
+                if (validateMinMax(max) && number > max) {
+                    number = max;
+                }
+                if (validateMinMax(min) && number < min) {
                     number = min;
                 }
             }
@@ -338,7 +374,6 @@
                     }
 
                     $el.on('change, focusout', function (e) {
-                        console.log('test1')
                         validateInput(e, $(this));
                         if (globalOptions.stepForm.active && globalOptions.stepForm.dynamicValidation) {
                             var $step = $(this).closest(globalOptions.stepForm.stepSelector);
@@ -661,7 +696,6 @@
 
         /* Element validators */
         var validateInput = function (event, $element) {
-            console.log('validateinput')
             var $container = $element.closest('.custom-form-validated');
             if ($container.length == 0) $container = $element;
 
@@ -695,9 +729,11 @@
                                 r = validatePost(val);
                                 break;
                             case 'numeric':
-                                var max = $element.data("max");
-                                var min = $element.data("min");
-                                r = validateNumeric(val, max, min);
+                                var max = $element.data('max');
+                                var min = $element.data('min');
+                                var decimal = $element.data('decimal');
+                                var decimalPlaces = $element.data('decimal-places');
+                                    r = validateNumeric(val, max, min, decimal, decimalPlaces);
                                 break;
                             default:
                                 r = true;
@@ -868,12 +904,19 @@
             matches = value.match(/^[0-9]{5}$/);
             return matches;
         };
-        var validateNumeric = function (value, max, min) {
+        var validateNumeric = function (value, max, min, decimal) {
             if (value == '') return true;
-            if(value < min || value > max){
+            if (validateMinMax(max) && value > max) {
                 return false;
             }
-            return !isNaN(parseInt(value));
+
+            if (validateMinMax(min) && value < min) {
+                return false;
+            }
+            if (decimal === true){
+                return value.match(/^[-]{0,1}[1-9]{1}[0-9]*([\.]{1}[0-9]*){0,1}$|^0$|^[-]{0,1}0[\.]{1}[0-9]*$/gi);
+            }
+            return value.match(/^[-]{0,1}[1-9]{1}[0-9]*$|^0$/gi);
         };
 
         var init = function () {
