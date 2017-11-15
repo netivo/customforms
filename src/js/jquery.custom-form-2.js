@@ -267,6 +267,10 @@
             return true
         };
 
+        var pad = function (num, size) {
+            var s = "000000000" + num;
+            return s.substr(s.length - size);
+        };
         var inputNumberUp = function (e) {
             e.preventDefault();
             var $input = $(this).parent().parent().find('input');
@@ -278,14 +282,19 @@
             var decimalPlaces = $input.data('decimal-places');
             number = (decimal === true) ? parseFloat(number) : parseInt(number);
             if (!validateMinMax(step)) {
-                if (decimal === true) step = 0.1;
+                if (decimal === true) {
+                    step = 0.1;
+                    if (validateMinMax(decimalPlaces)) {
+                        var strStep = '0.'+pad(1,decimalPlaces);
+                        step = parseFloat(strStep);
+                    } else step = 0.1;
+                }
                 else step = 1;
             }
             if (decimal === true && !validateMinMax(decimalPlaces)) decimalPlaces = 1;
             if (isNaN(number)) {
                 if (!validateMinMax(min)) {
                     number = 0;
-
                 } else {
                     number = min;
                 }
@@ -318,7 +327,13 @@
             var decimalPlaces = $input.data('decimal-places');
             number = (decimal === true) ? parseFloat(number) : parseInt(number);
             if (!validateMinMax(step)) {
-                if (decimal === true) step = 0.1;
+                if (decimal === true) {
+                    step = 0.1;
+                    if (validateMinMax(decimalPlaces)) {
+                        var strStep = '0.'+pad(1,decimalPlaces);
+                        step = parseFloat(strStep);
+                    } else step = 0.1;
+                }
                 else step = 1;
             }
             if (decimal === true && !validateMinMax(decimalPlaces)) decimalPlaces = 1;
@@ -733,7 +748,7 @@
                                 var min = $element.data('min');
                                 var decimal = $element.data('decimal');
                                 var decimalPlaces = $element.data('decimal-places');
-                                    r = validateNumeric(val, max, min, decimal, decimalPlaces);
+                                r = validateNumeric(val, max, min, decimal, decimalPlaces);
                                 break;
                             default:
                                 r = true;
@@ -904,7 +919,7 @@
             matches = value.match(/^[0-9]{5}$/);
             return matches;
         };
-        var validateNumeric = function (value, max, min, decimal) {
+        var validateNumeric = function (value, max, min, decimal, decimalPlaces) {
             if (value == '') return true;
             if (validateMinMax(max) && value > max) {
                 return false;
@@ -913,8 +928,14 @@
             if (validateMinMax(min) && value < min) {
                 return false;
             }
-            if (decimal === true){
-                return value.match(/^[-]{0,1}[1-9]{1}[0-9]*([\.]{1}[0-9]*){0,1}$|^0$|^[-]{0,1}0[\.]{1}[0-9]*$/gi);
+            if (decimal === true) {
+                var dp = '+';
+                if (validateMinMax(decimalPlaces)) {
+                    dp = '{1,' + decimalPlaces + '}';
+                }
+                var str = '^[-]{0,1}[1-9]{1}[0-9]*([\.]{1}[0-9]' + dp + '){0,1}$|^0$|^[-]{0,1}0[\.]{1}[0-9]' + dp + '$';
+                var reg = new RegExp(str, 'gi');
+                return value.match(reg);
             }
             return value.match(/^[-]{0,1}[1-9]{1}[0-9]*$|^0$/gi);
         };
