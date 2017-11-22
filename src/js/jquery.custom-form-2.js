@@ -408,7 +408,7 @@
         var initValidationTextarea = function ($el) {
             var data_validation = $el.attr('data-validation');
             if (typeof data_validation != 'undefined') {
-                $el.wrap('<div class="input-group custom-form-validated"></div>');
+                $el.wrap('<div class="cf-form__input-group custom-form-validated"></div>');
                 $el.addClass('cf-form__input');
                 var $cont = $el.parent();
 
