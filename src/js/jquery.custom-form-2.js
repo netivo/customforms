@@ -409,14 +409,14 @@
             var data_validation = $el.attr('data-validation');
             if (typeof data_validation != 'undefined') {
                 $el.wrap('<div class="cf-form__input-group custom-form-validated"></div>');
-                $el.addClass('cf-form__input');
+                $el.addClass('cf-form__textarea');
                 var $cont = $el.parent();
 
                 var validations = [];
                 validations = data_validation.split(/\s/);
 
                 if (validations.length > 0) {
-                    $cont.append($('<span></span>').addClass('cf-form__addon--prefix'));
+                    $cont.append($('<span></span>').addClass('cf-form__addon cf-form__addon--validate'));
 
                     $el.on('change, focusout', function (e) {
                         validateTextarea(e, $(this));
