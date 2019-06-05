@@ -5,7 +5,20 @@
     <title>JQuery CustomForm - Example</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="font-awesome/font-awesome.css" rel="stylesheet"/>
-    <link href="../dist/css/jquery.custom-forms.min.css" rel="stylesheet"/>
+    <link href="../dist/css/jquery.custom-forms.css" rel="stylesheet"/>
+
+    <style>
+        .error__tooltip {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            color: #cc2931;
+        }
+
+        .highlight {
+            background-color: #eee !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -24,7 +37,7 @@
             <form action="" id="form">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" data-validation="required email" placeholder="Email"/>
+                        <input type="text" data-validation="email" placeholder="Email"/>
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" data-validation="required phone" placeholder="Telefon"/>
@@ -32,7 +45,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
-                        <input type="text" data-validation="required alphanumeric" placeholder="Tekst"/>
+                        <input type="text" data-validation="alphanumeric" data-error-alphanumeric="test" placeholder="Tekst"/>
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <input type="text" data-validation="required post" placeholder="Kod pocztowy"/>
@@ -40,7 +53,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
-                        <select data-validation="required" placeholder="Wybierz">
+                        <select data-validation="required" placeholder="Wybierz" data-error-required="test3">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -53,7 +66,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-4">
                         <input data-validation="required" type="checkbox" id="modal_fast_terms" required="required"/>
-                        <label for="modal_fast_terms"><span></span>Zgadzam się na przetwarzanie oraz przesłanie moich
+                        <label for="modal_fast_terms" class="checkbox_text">Zgadzam się na przetwarzanie oraz przesłanie moich
                             danych do przedstawiciela handlowego Internormu w mojej okolicy, oraz na to, aby
                             skontaktował się on ze mną w celu udzielenia indywidualnej porady.</label>
                     </div>
@@ -61,7 +74,7 @@
                         <input value="personal" data-validation="required" type="radio" data-checkbox-type="box"
                                data-checkbox-group="meeting" id="ff-meeting-personal">
                         <label for="ff-meeting-personal">Spotkali się osobiście</label>
-                        <input value="phone" data-validation="required" type="radio" data-checkbox-type="box"
+                        <input value="phone" data-validation="required" data-error-required="test2" type="radio" data-checkbox-type="box"
                                data-checkbox-group="meeting" id="ff-meeting-phone">
                         <label for="ff-meeting-phone">Zadzwonili do Ciebie</label>
                         <input value="offer" data-validation="required" type="radio" data-checkbox-type="box"
@@ -87,9 +100,7 @@
                             <button class="btn-file add_next_file">Przeglądaj</button>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6"></div>
                 </div>
-
                 <div class="row">
                     <div class="col-xs-12">
                         <input type="submit" value="Wyślij"/>
@@ -104,7 +115,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="../libs/jquery.maskedinput.js"></script>
 <script src="../libs/jquery.plupload/plupload.full.min.js"></script>
-<script src="../dist/js/jquery.custom-forms.js"></script>
+<script src="../src/js/jquery.custom-form-2.js"></script>
 
 <script>
     $(document).ready(function () {

@@ -254,8 +254,13 @@
   .cf-form .cf-form__select.validation-error:after {
     color: #CC2931; }
 
-.cf-form input[type="checkbox"] {
-  display: none; }
+  .cf-form input[type="checkbox"] {
+    display: inline; 
+    position: relative;
+    top: 2px;}
+  .checkbox_text {
+    display: inline;
+  }
 
 .cf-form input[type="checkbox"] + label {
   font-weight: 400;
