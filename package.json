@@ -1,34 +1,32 @@
 {
-  "name": "cudtom-forms",
-  "version": "1.0.0",
-  "description": "Netivo JQuery CustomForms plugin",
+  "name": "@netivo/customforms",
+  "version": "1.2.6",
+  "description": "Jquery plugin to make forms look/work better with dynamic validation.",
+  "main": "dist/js/jquery.customforms.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "gulp compile"
   },
-  "author": "Netivo | Michał Świątek",
-  "license": "ISC",
+  "keywords": [
+    "forms",
+    "validation",
+    "netivo",
+    "dynamic",
+    "stepform"
+  ],
+  "author": "Netivo <biuro@netivo.pl> (http://netivo.pl)",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "jquery": ">=2.2.4",
+    "jquery.maskedinput": "^1.4.1",
+    "plupload": "^2.3.6"
+  },
   "devDependencies": {
-    "minimatch": "*",
-    "lodash": "*",
-    "graceful-fs": "*",
-    "gulp": "*",
-    "gulp-concat": "*",
-    "gulp-concat-css": "*",
-    "gulp-jshint": "*",
-    "gulp-clean-css": "*",
-    "gulp-rename": "*",
-    "gulp-less": "*",
-    "gulp-sass": "*",
-    "gulp-uglify": "*",
-    "jshint": "*"
-  },
-  "main": "gulpfile.js",
-  "directories": {
-    "example": "example"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://KotekNetivo@bitbucket.org/netivo/jquery-customforms.git"
-  },
-  "homepage": "https://bitbucket.org/netivo/jquery-customforms#readme"
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.2",
+    "gulplog": "^1.0.0"
+  }
 }

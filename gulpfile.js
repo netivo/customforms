@@ -1,36 +1,37 @@
-var gulp = require('gulp');
+let gulp = require('gulp');
+let gulplog = require('gulplog');
+let concat = require('gulp-concat');
+let uglify = require('gulp-uglify');
+let rename = require('gulp-rename');
+let minifyCss = require('gulp-clean-css');
+let sass = require('gulp-sass');
 
-var jshint = require('gulp-jshint');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var minifyCss = require('gulp-clean-css');
-var sass = require('gulp-sass');
-
-var projectName = 'jquery.custom-forms';
-
-gulp.task('main-css', function(){
+const compileSass = function () {
     return gulp.src('src/sass/main.scss')
-        .pipe(sass({includePaths: ['src/sass']}).on('error', sass.logError))
-        .pipe(rename(projectName + '.css'))
+        .pipe(sass({includePaths: ['src/sass']}).on('error', gulplog.error))
+        .pipe(rename('jquery.customforms.css'))
         .pipe(gulp.dest('dist/css'))
-        .pipe(rename(projectName + '.min.css'))
+        .pipe(rename('jquery.customforms.min.css'))
         .pipe(minifyCss())
         .pipe(gulp.dest('dist/css'));
-});
-gulp.task('main-js', function(){
+};
+
+const compileJavascript = function() {
     return gulp.src('src/js/**/*.js')
-        .pipe(concat(projectName+'.js'))
+        .pipe(concat('jquery.customforms.js'))
         .pipe(gulp.dest('dist/js'))
-        .pipe(rename(projectName+'.min.js'))
+        .pipe(rename('jquery.customforms.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dist/js'));
-});
+};
 
-gulp.task('watch-main-css', function(){
-    return gulp.watch('src/sass/**/*.scss', ['main-css']);
-});
-gulp.task('watch-main-js', function(){
-    return gulp.watch('src/js/**/*.js', ['main-js']);
-});
-gulp.task('watch', ['watch-main-css', 'watch-main-js']);
+const developSass = function(){
+    return gulp.watch('src/sass/**/*.scss', compileSass);
+};
+
+const developJavascript = function () {
+    return gulp.watch('src/js/**/*.js', compileJavascript);
+};
+
+exports.develop = gulp.parallel(developSass, developJavascript);
+exports.compile = gulp.parallel(compileSass, compileJavascript);

@@ -1,8 +1,17 @@
-/**
- * Created by Michał on 08.02.2017.
- */
-
-(function ($) {
+(function(factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        // AMD
+        define(['jquery'], factory);
+    } else if (typeof module !== 'undefined' && module.exports) {
+        // CommonJS
+        module.exports = factory(require('jquery'), require('jquery.maskedinput/src/jquery.maskedinput'));
+    } else {
+        // Global
+        factory(jQuery);
+    }
+})(function ($, mask) {
+    'use strict';
 
     var defaults = {
         customSelect: true,
@@ -56,6 +65,10 @@
         }
     };
 
+    var $customForm = function(options){
+        return $(window).customForm(options);
+    };
+
     $.fn.customForm = function (options) {
         var $form;
         var globalOptions;
@@ -71,6 +84,16 @@
         var up_cont_id = null;
         var up_add_id = null;
         var up_list_id = null;
+
+        var errors = {
+            'required': 'Field is required',
+            'phone': 'Field can only have numeric characters and has to be 9 digits long',
+            'email': 'Invalid email address',
+            'alphanumeric': 'Field can only have alphanumeric characters',
+            'post': 'Field can only have numeric characters and has to be 5 digits long',
+            'numeric': 'Field can only have numeric characters',
+            'default': 'Field is invalid'
+        };
 
         var randomString = function () {
             var text = "";
@@ -139,24 +162,44 @@
                 e.preventDefault();
             });
             var $ul = $('<ul class="cf-form__select-options" style="position: absolute; bottom: 0; top: 100%;"></ul>');
+            $parent.data('current', -1);
             $.each(options, function () {
                 var val = $(this).attr('value');
                 var text = $(this).html();
-                var $li = $('<li class="cf-form__select-option"></li>').attr('data-value', val).html(text).on('click', customSelectOptionClick);
+                var $li = $('<li class="cf-form__select-option"></li>').attr("data-value", val).html(text).on('click', customSelectOptionClick);
                 $ul.append($li);
             });
             $parent.append($select).append($ul).append($input);
             $parent.on('click', customSelectTriggerClick);
+
+            $parent.on('keydown', customSelectKeyboard);
+
             $parent.on('mouseleave', customSelectTriggerLeave);
 
+            $select.on('focusin', function(e) {
+                $parent.css('box-shadow', '0 0 5px rgba(81, 203, 238, 1)');
+            });
+            $select.on('focusout', function(e) {
+                $parent.css('box-shadow', 'none');
+            });
 
             if (globalOptions.validation) {
                 var data_validation = $el.attr('data-validation');
-                var validation_error = $el.attr('data-validation-error');
+                var validation_error = $el.attr('data-error-required');
+                var validation_error2 = $el.attr('data-error-phone');
+                var validation_error3 = $el.attr('data-error-email');
+                var validation_error4 = $el.attr('data-error-alphanumeric');
+                var validation_error5 = $el.attr('data-error-post');
+                var validation_error6 = $el.attr('data-error-numeric');
                 if (data_validation != 'undefined') {
                     $parent.attr('data-validation', data_validation);
                     $parent.addClass('custom-form-validated');
-                    if (validation_error != 'undefined') $parent.attr('data-validation-error', validation_error);
+                    if (typeof validation_error !== 'undefined') $parent.attr('data-error-required', validation_error);
+                    if (typeof validation_error2 !== 'undefined') $parent.attr('data-error-phone', validation_error);
+                    if (typeof validation_error3 !== 'undefined') $parent.attr('data-error-email', validation_error);
+                    if (typeof validation_error4 !== 'undefined') $parent.attr('data-error-alphanumeric', validation_error);
+                    if (typeof validation_error5 !== 'undefined') $parent.attr('data-error-post', validation_error);
+                    if (typeof validation_error6 !== 'undefined') $parent.attr('data-error-numeric', validation_error);
                     $input.on('change', function (e) {
                         validateInput(e, $(this));
                         if (globalOptions.stepForm.active && globalOptions.stepForm.dynamicValidation) {
@@ -166,6 +209,11 @@
                     });
                 }
             }
+
+            var $tooltip = $("<div/>", {
+                "class": "error__tooltip"
+            });
+            $parent.after($tooltip);
 
             $el.remove();
         };
@@ -185,6 +233,11 @@
                     if ($gr.length == 0) {
                         $el.wrap('<div class="cf-form__checkbox-group type-' + itype + '" data-group="' + group + '"></div>');
                         $container = $el.parent();
+
+                        var $tooltip = $("<div/>", {
+                            "class": "error__tooltip"
+                        });
+                        $container.after($tooltip);
                     } else {
                         $container = $gr;
                     }
@@ -193,9 +246,22 @@
                     $el.wrap('<div class="cf-form__checkbox-group type-' + itype + '"></div>');
                     $container = $el.parent();
                     name = $el.attr('name');
+
+                    var $tooltip = $("<div/>", {
+                        "class": "error__tooltip"
+                    });
+                    $container.after($tooltip);
                 }
-                var $check = $('<a></a>').addClass('cf-form__checkbox').attr('href', '').attr('data-value', $el.val()).html($label.html()).on('click', customCheckboxClick);
+
+                var $check = $('<a></a>').addClass('cf-form__checkbox').attr('href', '').attr('data-value', $el.val()).html($label.html()).on('click', customCheckboxClick).on('keydown', customCheckboxKeyboard);
                 var $input = $('<input/>').attr('type', 'hidden').attr('name', name).attr('value', '');
+
+                $check.on('focusin', function(e) {
+                    $(this).css('box-shadow', '0 0 5px rgba(81, 203, 238, 1)');
+                });
+                $check.on('focusout', function(e) {
+                    $(this).css('box-shadow', 'none');
+                });
 
                 $container.append($check);
                 var $in = $container.find('input[type="hidden"]');
@@ -203,12 +269,22 @@
 
                 if (globalOptions.validation) {
                     var data_validation = $el.attr('data-validation');
-                    var validation_error = $el.attr('data-validation-error');
+                    var validation_error = $el.attr('data-error-required');
+                    var validation_error2 = $el.attr('data-error-phone');
+                    var validation_error3 = $el.attr('data-error-email');
+                    var validation_error4 = $el.attr('data-error-alphanumeric');
+                    var validation_error5 = $el.attr('data-error-post');
+                    var validation_error6 = $el.attr('data-error-numeric');
 
                     if (typeof data_validation !== 'undefined') {
                         $container.attr('data-validation', data_validation);
                         $container.addClass('custom-form-validated');
-                        if (typeof validation_error !== 'undefined') $container.attr('data-validation-error', validation_error);
+                        if (typeof validation_error !== 'undefined') $container.attr('data-error-required', validation_error);
+                        if (typeof validation_error2 !== 'undefined') $container.attr('data-error-phone', validation_error);
+                        if (typeof validation_error3 !== 'undefined') $container.attr('data-error-email', validation_error);
+                        if (typeof validation_error4 !== 'undefined') $container.attr('data-error-alphanumeric', validation_error);
+                        if (typeof validation_error5 !== 'undefined') $container.attr('data-error-post', validation_error);
+                        if (typeof validation_error6 !== 'undefined') $container.attr('data-error-numeric', validation_error);
                         $input.on('change', function (e) {
                             validateInput(e, $(this));
                             if (globalOptions.stepForm.active && globalOptions.stepForm.dynamicValidation) {
@@ -218,7 +294,7 @@
                         });
                     }
                 }
-
+                $container.data('current', -1);
                 $el.remove();
                 $label.remove();
 
@@ -254,10 +330,12 @@
                                 validateStep($step);
                             }
                         })
-                    }
-                }
-            }
 
+                    }
+
+                }
+
+            }
 
         };
         var validateMinMax = function (val) {
@@ -370,6 +448,13 @@
                 var validations = [];
                 validations = data_validation.split(/\s/);
 
+                $el.parent().on('focusin', function(e) {
+                    $(this).css('box-shadow', '0 0 5px rgba(81, 203, 238, 1)');
+                });
+                $el.parent().on('focusout', function(e) {
+                    $(this).css('box-shadow', 'none');
+                });
+
                 if (validations.length > 0) {
                     $cont.append($('<span></span>').addClass('cf-form__addon cf-form__addon--validate'));
 
@@ -386,6 +471,7 @@
                                 .append($('<a></a>').addClass('cf-form__numeric-button cf-form__numeric-button--up').on('click', inputNumberUp))
                                 .append($('<a></a>').addClass('cf-form__numeric-button cf-form__numeric-button--down').on('click', inputNumberDown))
                         );
+                        $el.on('keydown', customInputKeyboard);
                     }
 
                     $el.on('change, focusout', function (e) {
@@ -403,6 +489,10 @@
                         }
                     });
                 }
+                var $tooltip = $("<div/>", {
+                    "class": "error__tooltip"
+                });
+                $cont.after($tooltip);
             }
         };
         var initValidationTextarea = function ($el) {
@@ -414,6 +504,13 @@
 
                 var validations = [];
                 validations = data_validation.split(/\s/);
+
+                $el.parent().on('focusin', function(e) {
+                    $(this).css('box-shadow', '0 0 5px rgba(81, 203, 238, 1)');
+                });
+                $el.parent().on('focusout', function(e) {
+                    $(this).css('box-shadow', 'none');
+                });
 
                 if (validations.length > 0) {
                     $cont.append($('<span></span>').addClass('cf-form__addon cf-form__addon--validate'));
@@ -433,6 +530,10 @@
                         }
                     });
                 }
+                var $tooltip = $("<div/>", {
+                    "class": "error__tooltip"
+                });
+                $cont.after($tooltip);
             }
         };
         var initStepForm = function () {
@@ -472,6 +573,13 @@
             $cont.attr('id', up_cont_id).addClass('cf-form__upload-container');
             $list.attr('id', up_list_id).addClass('cf-form__files');
             $add.attr('id', up_add_id).addClass('cf-form__upload-button');
+
+            $add.on('focusin', function(e) {
+                $(this).css('box-shadow', '0 0 5px rgba(81, 203, 238, 1)');
+            });
+            $add.on('focusout', function(e) {
+                $(this).css('box-shadow', 'none');
+            });
 
             uploader = new plupload.Uploader({
                 runtimes: 'html5,flash,silverlight,html4',
@@ -566,8 +674,6 @@
                 globalOptions.fileUpload.onFileDeleted($form, uploader.getFile(id));
             });
         };
-
-        /* Element triggers */
         var customCheckboxClick = function (e) {
             e.preventDefault();
             var $cont = $(this).parent();
@@ -611,13 +717,75 @@
                 }
                 $input.trigger('change');
             }
-
         };
+        var customCheckboxKeyboard = function (e) {
+            var $cont = $(this).parent();
+            var $el = $(this);
+            var optionsList = $cont.find('.cf-form__checkbox');
+            var current = $cont.data('current');
+            if ($(optionsList[0]).is(':focus')) {
+                current = 0;
+            }
+            if(e.keyCode == 38 || e.keyCode == 40){
+                console.log(current);
+                if(e.keyCode == 38){
+                    current = (current == -1) ? optionsList.length - 1 : ((current == 0) ? current : current - 1);
+                } else {
+                    current = (current == -1) ? 0 : ((current == optionsList.length - 1) ? current : current + 1);
+                }
+                $cont.data('current', current);
+                console.log(current);
+                $(optionsList[current]).focus();
+            }
+            if (e.keyCode == 32) {
+                e.preventDefault();
+                var $input = $cont.find('input[type="hidden"]');
+
+                var type = ($cont.hasClass('type-checkbox')) ? 'checkbox' : 'radio';
+                var value = $el.attr('data-value');
+
+                if ($el.hasClass('checked')) {
+                    if (type == 'checkbox') {
+                        $el.removeClass('checked');
+                        var val = $input.attr('value');
+                        if (val != '') {
+                            val = val.split(',');
+                            var i = val.indexOf(value);
+                            if (i > -1) {
+                                val.splice(i, 1);
+                            }
+                            val = val.join(',');
+                        }
+                        $input.attr('value', val);
+                        $input.trigger('change');
+                    }
+                } else {
+                    if (type == 'radio') {
+                        var checks = $cont.find('.cf-form__checkbox');
+                        checks.removeClass('checked');
+                    }
+                    $el.addClass('checked');
+                    if (type == 'radio') {
+                        $input.attr('value', value);
+                    } else {
+                        var val = $input.attr('value');
+                        if (val != '') {
+                            val = val.split(',');
+                            val.push(value);
+                            val = val.join(',');
+                        } else val = value;
+                        $input.attr('value', val);
+                    }
+                    $input.trigger('change');
+                }
+            }
+        }
         var customSelectOptionClick = function (e) {
             e.preventDefault();
             var val = $(this).attr('data-value');
             var txt = $(this).html();
             var $parent = $(this).parent().parent();
+            var optionsList = $parent.find('.cf-form__select-option');
             if (val != '') $parent.addClass('selected');
             else $parent.removeClass('selected');
 
@@ -625,33 +793,169 @@
             // $ul.css({"bottom": "0px"});
             // $parent.removeClass('opened');
 
+            optionsList.removeClass('highlight');
+            $(this).addClass('highlight');
+
             $parent.find('a').find('span').html(txt);
             $parent.find('input[type="hidden"]').val(val).trigger('change');
-
-
         };
         var customSelectTriggerClick = function (e) {
             e.preventDefault();
-            var $ul = $(this).find('ul');
-            if (!$(this).hasClass('cs-form__select-opened')) {
-                var h = 0;
+            customSelectTrigger($(this));
+        };
+        var customSelectTrigger = function($el){
+            var $ul = $el.find('ul');
+            if (!$el.hasClass('cs-form__select-opened')) {
+                var h = 0;0
                 $ul.find('li').each(function () {
                     h += $(this).outerHeight(true);
                 });
                 $ul.css({"bottom": "-" + h + "px"});
-                $(this).addClass('cs-form__select-opened');
+                $el.addClass('cs-form__select-opened');
             }
             else {
                 $ul.css({"bottom": "0px"});
-                $(this).removeClass('cs-form__select-opened');
+                $el.removeClass('cs-form__select-opened');
             }
-        };
+        }
         var customSelectTriggerLeave = function (e) {
             e.preventDefault();
             var $ul = $(this).find('ul');
             $ul.css({"bottom": "0px"});
             $(this).removeClass('cs-form__select-opened');
         };
+        var customInputKeyboard = function(e) {
+            var keyCode = event.which;
+            var array = [8, 9, 38, 40, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 107, 109, 189, 190];
+            if (array.indexOf(keyCode) < 0) {
+                e.preventDefault();
+                return;
+            }
+            var $input = $(this);
+            var max = $input.data('max');
+            var min = $input.data('min');
+            var step = $input.data('step');
+            var decimal = $input.data('decimal');
+            var decimalPlaces = $input.data('decimal-places');
+            number = (decimal === true) ? parseFloat(number) : parseInt(number);
+
+            if (!validateMinMax(step)) {
+                if (decimal === true) {
+                    step = 0.1;
+                    if (validateMinMax(decimalPlaces)) {
+                        var strStep = '0.'+pad(1,decimalPlaces);
+                        step = parseFloat(strStep);
+                    } else step = 0.1;
+                }
+                else step = 1;
+            }
+            if (decimal === true && !validateMinMax(decimalPlaces)) decimalPlaces = 1;
+
+            if (e.keyCode == 38 || e.keyCode == 107) {
+                if (isNaN(number)) {
+                    if (!validateMinMax(min)) {
+                        number = 0;
+                    } else {
+                        number = min;
+                    }
+                } else {
+                    number += step;
+                    number = number.toFixed(decimalPlaces);
+                    if (validateMinMax(max) && number > max) {
+                        number = max;
+                    }
+                    if (validateMinMax(min) && number < min) {
+                        number = min;
+                    }
+                }
+            } else if (e.keyCode == 40 || e.keyCode == 109) {
+                if (isNaN(number)) {
+                    if (!validateMinMax(max)) {
+                        number = 0;
+                    } else {
+                        number = max;
+                    }
+                } else {
+                    number -= step;
+                    number = number.toFixed(decimalPlaces);
+                    if (validateMinMax(max) && number > max) {
+                        number = max;
+                    }
+                    if (validateMinMax(min) && number < min) {
+                        number = min;
+                    }
+                }
+            }
+            var number = $input.val();
+            $input.val(number);
+            validateInput(e, $input);
+            if (globalOptions.stepForm.active && globalOptions.stepForm.dynamicValidation) {
+                var $step = $input.closest(globalOptions.stepForm.stepSelector);
+                validateStep($step);
+            }
+        }
+        var customSelectKeyboard = function(e){
+            // STARTING INDEX = -1
+            var optionsList = $(this).find('.cf-form__select-option');
+            var $ul = $(this).find('ul');
+            var current = $(this).data('current');
+
+            // // SPACE - 32
+            if(e.keyCode === 32){
+                if (!$(this).hasClass('cs-form__select-opened')) {
+                    customSelectTrigger($(this));
+                } else{
+                    $ul.css({"bottom": "0px"});
+                    $(this).removeClass('cs-form__select-opened');
+                };
+            }
+            // ARROW UP - 38
+            // ARROW DOWN - 40
+            else if(e.keyCode == 38 || e.keyCode == 40){
+                    if(e.keyCode == 38){
+                        current = (current == -1) ? optionsList.length - 1 : ((current == 0) ? current : current - 1);
+                    } else {
+                        current = (current == -1) ? 0 : ((current == optionsList.length - 1) ? current : current + 1);
+                    }
+                    $(this).data('current', current);
+                var val = $(optionsList[current]).attr('data-value');
+                var txt = $(optionsList[current]).html();
+                if (val != '') $(this).addClass('selected');
+                else $(this).removeClass('selected');
+
+                $(this).find('a').find('span').html(txt);
+                $(this).find('input[type="hidden"]').val(val).trigger('change');
+
+                $(optionsList).removeClass('highlight');
+                $(optionsList[current]).addClass('highlight');
+            }
+            // TAB - 9 // ENTER - 13
+            else if (e.keyCode == 9 || e.keyCode == 13) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                }
+                if ($(this).hasClass('cs-form__select-opened')) {
+                    if ($ul.is(':hover')) {
+                        var $hoverTarget = $(e.currentTarget).find('.cf-form__select-option:hover');
+                        var val = $hoverTarget.attr('data-value');
+                        var txt = $hoverTarget.html();
+                        $(this).addClass('selected');
+
+                        $(optionsList).removeClass('highlight');
+                        $hoverTarget.addClass('highlight');
+
+                        $(this).find('a').find('span').html(txt);
+                        $(this).find('input[type="hidden"]').val(val).trigger('change');
+                    }
+                    $ul.css({"bottom": "0px"});
+                    $(this).removeClass('cs-form__select-opened');
+                } else {
+                    if (e.keyCode == 13) {
+                        customSelectTrigger($(this));
+                    }
+                }
+            }
+        }
         var nextStepClick = function (e) {
             e.preventDefault();
             var valid = true;
@@ -718,30 +1022,43 @@
             if ($.inArray(type, ['text', 'hidden', 'email']) != -1) {
                 var val = $element.val();
                 var data_validation;
-                if (type == 'text' || type == 'email') data_validation = $element.attr('data-validation');
-                else data_validation = $container.attr('data-validation');
+                var $error_el;
+                if (type == 'text' || type == 'email'){
+                    data_validation = $element.attr('data-validation');
+                    $error_el = $element;
+                }
+                else {
+                    data_validation = $container.attr('data-validation');
+                    $error_el = $container;
+                }
 
                 var validations = data_validation.split(/\s/);
 
                 if (validations.length > 0) {
                     var res = true;
+                    var typeOfError = '';
                     $.each(validations, function (key, value) {
                         var r = true;
                         switch (value) {
                             case 'required':
                                 r = validateRequired(val);
+                                if (!r) { typeOfError = 'required' };
                                 break;
                             case 'phone':
                                 r = validatePhone(val);
+                                if (!r) { typeOfError = 'phone' };
                                 break;
                             case 'email':
                                 r = validateEmail(val);
+                                if (!r) { typeOfError = 'email' };
                                 break;
                             case 'alphanumeric':
                                 r = validateAlphanumeric(val);
+                                if (!r) { typeOfError = 'alphanumeric' };
                                 break;
                             case 'post':
                                 r = validatePost(val);
+                                if (!r) { typeOfError = 'post' };
                                 break;
                             case 'numeric':
                                 var max = $element.data('max');
@@ -749,24 +1066,38 @@
                                 var decimal = $element.data('decimal');
                                 var decimalPlaces = $element.data('decimal-places');
                                 r = validateNumeric(val, max, min, decimal, decimalPlaces);
+                                if (!r) { typeOfError = 'numeric' };
                                 break;
                             default:
                                 r = true;
                         }
-                        if (!r) res = false;
+                        if (!r) {
+                            res = false;
+                            return false;
+                        }
                     });
 
+                    var $tooltip = $container.next('.error__tooltip');
                     if (res) {
-                        $container.addClass('validation-ok');
-                        $container.removeClass('validation-error');
+                        if ($.inArray('required', validations) == '-1' && val.length == 0) {
+                            $container.addClass('not-required');
+                            $container.removeClass('validation-ok');
+                            $container.removeClass('validation-error');
+                            $tooltip.text('');
+                        } else {
+                            $container.addClass('validation-ok');
+                            $container.removeClass('validation-error');
+                            $tooltip.text('');
+                        }
                     } else {
-                        $container.removeClass('validation-ok');
-                        $container.addClass('validation-error');
+                            $container.removeClass('validation-ok');
+                            $container.addClass('validation-error');
+                            var errorText = (typeof $error_el.attr('data-error-'+typeOfError) !== 'undefined') ? $error_el.attr('data-error-'+typeOfError) : errors[typeOfError];
+                            $tooltip.text(errorText);
                     }
                     globalOptions.onInputValidation($form, $element, res);
                 }
             }
-
         };
         var validateTextarea = function (event, $element) {
             var $container = $element.closest('.custom-form-validated');
@@ -780,24 +1111,41 @@
 
             if (validations.length > 0) {
                 var res = true;
+                var typeOfError = '';
                 $.each(validations, function (key, value) {
                     var r = true;
                     switch (value) {
                         case 'required':
                             r = validateRequired(val);
+                            if (!r) { typeOfError = 'required' };
                             break;
                         default:
                             r = true;
                     }
-                    if (!r) res = false;
+                    if (!r) {
+                        res = false;
+                        return false;
+                    }
                 });
 
+                var $tooltip = $container.next('.error__tooltip');
+
                 if (res) {
-                    $container.addClass('validation-ok');
-                    $container.removeClass('validation-error');
+                    if ($.inArray('required', validations) == '-1' && val.length == 0) {
+                        $container.addClass('not-required');
+                        $container.removeClass('validation-ok');
+                        $container.removeClass('validation-error');
+                        $tooltip.text('');
+                    } else {
+                        $container.addClass('validation-ok');
+                        $container.removeClass('validation-error');
+                        $tooltip.text('');
+                    }
                 } else {
                     $container.removeClass('validation-ok');
                     $container.addClass('validation-error');
+                    var errorText = (typeof $element.attr('data-error-'+typeOfError) !== 'undefined') ? $element.attr('data-error-'+typeOfError) : errors[typeOfError];
+                    $tooltip.text(errorText);
                 }
                 globalOptions.onInputValidation($form, $element, res);
             }
@@ -817,45 +1165,67 @@
                 var val = $input.val();
                 var data_validation;
                 var type;
+                var $error_el;
                 if ($input.prop('tagName').toLowerCase() != 'textarea') {
                     type = $input.attr('type');
-                    if (type == 'text' || type == 'email') data_validation = $input.attr('data-validation');
-                    else data_validation = $(this).attr('data-validation');
+                    if (type == 'text' || type == 'email'){
+                        data_validation = $input.attr('data-validation');
+                        $error_el = $input;
+                    }
+                    else {
+                        data_validation = $(this).attr('data-validation');
+                        $error_el = $(this);
+                    }
                 } else {
                     type = 'text';
                     data_validation = $input.attr('data-validation');
-
+                    $error_el = $input;
                 }
                 var validations = data_validation.split(/\s/);
+                var $tooltip = $(this).next('.error__tooltip');
 
                 if (validations.length > 0) {
                     var rt = true;
+                    var typeOfError = '';
                     if (type != 'checkbox') {
                         $.each(validations, function (key, value) {
                             var r = true;
                             switch (value) {
                                 case 'required':
                                     r = validateRequired(val);
+                                    if (!r) { typeOfError = 'required' };
                                     break;
                                 case 'phone':
                                     r = validatePhone(val);
+                                    if (!r) { typeOfError = 'phone' };
                                     break;
                                 case 'email':
                                     r = validateEmail(val);
+                                    if (!r) { typeOfError = 'email' };
                                     break;
                                 case 'alphanumeric':
                                     r = validateAlphanumeric(val);
+                                    if (!r) { typeOfError = 'alphanumeric' };
                                     break;
                                 case 'post':
                                     r = validatePost(val);
+                                    if (!r) { typeOfError = 'post' };
                                     break;
                                 case 'numeric':
-                                    r = validateNumeric(val);
+                                    var max = $input.data('max');
+                                    var min = $input.data('min');
+                                    var decimal = $input.data('decimal');
+                                    var decimalPlaces = $input.data('decimal-places');
+                                    r = validateNumeric(val, max, min, decimal, decimalPlaces);
+                                    if (!r) { typeOfError = 'numeric' };
                                     break;
                                 default:
                                     r = true;
                             }
-                            if (!r) rt = false;
+                            if (!r) {
+                                rt = false;
+                                return false;
+                            }
                         });
                     } else {
                         var group = $(this).attr('name');
@@ -870,13 +1240,24 @@
                             rt = ($(this).is(':checked'));
                         }
                     }
+
                     if (rt) {
-                        $(this).addClass('validation-ok');
-                        $(this).removeClass('validation-error');
+                        if ($.inArray('required', validations) == '-1' && val.length == 0) {
+                            $(this).addClass('not-required');
+                            $(this).removeClass('validation-ok');
+                            $(this).removeClass('validation-error');
+                            $tooltip.text('');
+                        } else {
+                            $(this).addClass('validation-ok');
+                            $(this).removeClass('validation-error');
+                            $tooltip.text('');
+                        }
                     } else {
                         res = false;
                         $(this).removeClass('validation-ok');
                         $(this).addClass('validation-error');
+                        var errorText = (typeof $error_el.attr('data-error-'+typeOfError) !== 'undefined') ? $error_el.attr('data-error-'+typeOfError) : errors[typeOfError];
+                        $tooltip.text(errorText);
                     }
                 }
             });
@@ -902,7 +1283,7 @@
         var validatePhone = function (value) {
             if (value == '') return true;
             value = value.replace(/(\-|\s)/gi, '');
-            matches = value.match(/^[0-9]{9}$/);
+            var matches = value.match(/^[0-9]{9}$/);
             return matches;
         };
         var validateEmail = function (value) {
@@ -916,7 +1297,7 @@
         var validatePost = function (value) {
             if (value == '') return true;
             value = value.replace(/(\-|\s)/gi, '');
-            matches = value.match(/^[0-9]{5}$/);
+            var matches = value.match(/^[0-9]{5}$/);
             return matches;
         };
         var validateNumeric = function (value, max, min, decimal, decimalPlaces) {
@@ -924,7 +1305,6 @@
             if (validateMinMax(max) && value > max) {
                 return false;
             }
-
             if (validateMinMax(min) && value < min) {
                 return false;
             }
@@ -943,11 +1323,21 @@
         var init = function () {
             $form.addClass('cf-form');
             formElements = $form.find('input, select, textarea');
-            $form.find('[type="submit"]').addClass('cf-form__submit')
+            var $submitButton = $form.find('[type="submit"]');
+            $submitButton.addClass('cf-form__submit');
+
+            $submitButton.on('focusin', function(e) {
+                $(this).css('box-shadow', '0 0 5px rgba(81, 203, 238, 1)');
+            });
+            $submitButton.on('focusout', function(e) {
+                $(this).css('box-shadow', 'none');
+            });
+
             $.each(formElements, function () {
                 var $el = $(this);
                 var tag = $el.prop('tagName').toLowerCase();
                 var type = (tag == 'input') ? $el.attr('type') : 'not-needed';
+
                 if (globalOptions.validation) {
                     $el.removeAttr('required');
                     $el.attr('autocomplete', 'off');
@@ -996,12 +1386,13 @@
                     console.log('zle!');
                 }
             });
+
             globalOptions.onInit();
         };
 
         if (this.length > 0) {
             if (this.length > 1) {
-                this.each(function () {
+                return this.each(function () {
                     $(this).customForm(options);
                 });
             } else {
@@ -1027,7 +1418,10 @@
                     }
                 });
 
+                return $form;
             }
         }
-    }
-})(jQuery);
+    };
+
+    return $customForm;
+});
