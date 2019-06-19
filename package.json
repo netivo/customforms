@@ -1,6 +1,6 @@
 {
   "name": "@netivo/customforms",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Jquery plugin to make forms look/work better with dynamic validation.",
   "main": "dist/js/jquery.customforms.js",
   "scripts": {
@@ -16,6 +16,7 @@
   "author": "Netivo <biuro@netivo.pl> (http://netivo.pl)",
   "license": "GPL-3.0",
   "dependencies": {
+    "inputmask": "^4.0.8",
     "jquery": ">=2.2.4",
     "jquery.maskedinput": "^1.4.1",
     "plupload": "^2.3.6"

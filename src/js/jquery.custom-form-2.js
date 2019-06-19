@@ -5,7 +5,7 @@
         define(['jquery'], factory);
     } else if (typeof module !== 'undefined' && module.exports) {
         // CommonJS
-        module.exports = factory(require('jquery'), require('jquery.maskedinput/src/jquery.maskedinput'));
+        module.exports = factory(require('jquery'), require('inputmask'));
     } else {
         // Global
         factory(jQuery);
@@ -35,7 +35,7 @@
 
             },
             onStepValidation: function ($form, $step, step_id, valid) {
-
+                return valid;
             }
         },
         fileUpload: {
@@ -58,7 +58,7 @@
 
         },
         onFormValidation: function ($form, valid) {
-
+            return valid;
         },
         onInit: function ($form) {
 
@@ -125,7 +125,7 @@
 
                     },
                     onStepValidation: function ($form, $step, step_id, valid) {
-
+                        return valid;
                     }
                 }
             } else {
@@ -460,10 +460,10 @@
 
                     if ($.inArray('phone', validations) != -1) {
                         $cont.prepend($('<span></span>').addClass('cf-form__addon cf-form__addon--prefix').html('+48'));
-                        if (globalOptions.useMask) $el.mask('999-999-999');
+                        if (globalOptions.useMask) Inputmask({"mask": "999-999-999"}).mask($el);
                     }
                     if ($.inArray('post', validations) != -1) {
-                        if (globalOptions.useMask) $el.mask('99-999');
+                        if (globalOptions.useMask) Inputmask({"mask": "99-999"}).mask($el);
                     }
                     if ($.inArray('numeric', validations) != -1) {
                         $cont.prepend(
@@ -1266,13 +1266,13 @@
         var validateStep = function ($step) {
             var validates = $step.find('.custom-form-validated');
             var res = validateFields(validates);
-            globalOptions.stepForm.onStepValidation($form, $step, currentStep, res);
+            res = globalOptions.stepForm.onStepValidation($form, $step, currentStep, res);
             return res;
         };
         var validateForm = function () {
             var validates = $form.find('.custom-form-validated');
             var res = validateFields(validates);
-            globalOptions.onFormValidation($form, res);
+            res = globalOptions.onFormValidation($form, res);
             return res;
         };
 
